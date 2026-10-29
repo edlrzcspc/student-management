@@ -33,7 +33,8 @@ app.get('/', (req, res) => {
         }
 
         res.render('index', {
-            students: results
+            students: results,
+            keyword: ''
         });
     });
 });
@@ -76,6 +77,57 @@ app.post('/students/add', (req, res) => {
 
         res.redirect('/');
     });
+});
+
+app.post('/students/delete', (req, res) => {
+    const { student_id } = req.body;
+
+    db.query(
+        'DELETE FROM students WHERE student_id = ?',
+        [student_id],
+        (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Unable to delete student');
+            }
+
+            res.redirect('/');
+        }
+    );
+});
+
+app.get('/students/search', (req, res) => {
+    const keyword = req.query.keyword || '';
+
+    const sql = `
+        SELECT * FROM students WHERE
+        student_id LIKE ? OR
+        first_name LIKE ? OR
+        last_name LIKE ? OR
+        course LIKE ?
+    `;
+
+    const searchValue = `%${keyword}%`;
+
+    db.query(
+        sql,
+        [
+            searchValue,
+            searchValue,
+            searchValue,
+            searchValue
+        ],
+        (err, results) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Search error');
+            }
+
+            res.render('index', {
+                students: results
+            });
+        }
+    );
 });
 
 app.listen(3000, () => {
