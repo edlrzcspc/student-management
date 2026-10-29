@@ -1,59 +1,112 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Student Management</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students | StudentHub</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-
 <body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="/">
+                <span class="brand-mark">S</span>
+                <span>Student<span class="brand-light">Hub</span></span>
+            </a>
+            <nav class="main-nav" aria-label="Main navigation">
+                <a class="nav-link active" href="/">
+                    <span class="nav-icon" aria-hidden="true">▦</span>
+                    <span>Students</span>
+                </a>
+                <a class="nav-link" href="/students/add">
+                    <span class="nav-icon" aria-hidden="true">＋</span>
+                    <span>Add student</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <span class="status-dot"></span>
+                <span>Academic records</span>
+            </div>
+        </aside>
 
-    <h1>Student Management System</h1>
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Student Management System</p>
+                    <h1>Students</h1>
+                </div>
+                <a class="button button-primary" href="/students/add">
+                    <span aria-hidden="true">＋</span> Add student
+                </a>
+            </header>
 
-    <form action="/students/search" method="GET">
+            <section class="summary-card" aria-label="Student summary">
+                <div>
+                    <p class="summary-label">Total students</p>
+                    <p class="summary-value"><%= students.length %></p>
+                    <p class="summary-note">Currently registered records</p>
+                </div>
+                <span class="summary-icon" aria-hidden="true">♙</span>
+            </section>
 
-        <input type="text" name="keyword" placeholder="Search student...">
+            <section class="content-card">
+                <div class="section-heading">
+                    <div>
+                        <h2>Student directory</h2>
+                        <p>View and manage all registered students.</p>
+                    </div>
+                    <form class="search-form" action="/students/search" method="GET">
+                        <label class="sr-only" for="student-search">Search students</label>
+                        <span class="search-icon" aria-hidden="true">⌕</span>
+                        <input id="student-search" type="search" name="keyword" value="<%= typeof keyword !== 'undefined' ? keyword : '' %>" placeholder="Search by name, ID, or course">
+                        <button class="button button-secondary" type="submit">Search</button>
+                    </form>
+                </div>
 
-        <button type="submit">
-            Search
-        </button>
-
-    </form>
-
-    <a href="/students/add">Add Student</a>
-
-    <hr>
-
-    <h2>Student List</h2>
-
-    <table border="1" cellpadding="10">
-
-        <tr>
-            <th>ID</th>
-            <th>Student ID</th>
-            <th>Name</th>
-            <th>Course</th>
-            <th>Year</th>
-            <th>Email</th>
-        </tr>
-
-        <% students.forEach(student => { %>
-
-        <tr>
-            <td><%= student.id %></td>
-            <td><%= student.student_id %></td>
-            <td>
-                <%= student.first_name %>
-                <%= student.last_name %>
-            </td>
-            <td><%= student.course %></td>
-            <td><%= student.year_level %></td>
-            <td><%= student.email %></td>
-        </tr>
-
-        <% }); %>
-
-    </table>
-
+                <div class="table-wrap">
+                    <table>
+                        <caption class="sr-only">Registered students</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Student ID</th>
+                                <th scope="col">Student name</th>
+                                <th scope="col">Course</th>
+                                <th scope="col">Year level</th>
+                                <th scope="col">Email address</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (students.length === 0) { %>
+                                <tr>
+                                    <td class="empty-state" colspan="6">No students found. Try another search or add a new student.</td>
+                                </tr>
+                            <% } %>
+                            <% students.forEach(student => { %>
+                                <tr>
+                                    <td><span class="student-id"><%= student.student_id %></span></td>
+                                    <td>
+                                        <div class="student-name">
+                                            <span class="avatar"><%= student.first_name.charAt(0) %><%= student.last_name.charAt(0) %></span>
+                                            <span><%= student.first_name %> <%= student.last_name %></span>
+                                        </div>
+                                    </td>
+                                    <td><%= student.course %></td>
+                                    <td><span class="year-badge">Year <%= student.year_level %></span></td>
+                                    <td><a class="email-link" href="mailto:<%= student.email %>"><%= student.email %></a></td>
+                                    <td>
+                                        <form action="/students/delete" method="POST" onsubmit="return confirm('Delete this student?');">
+                                            <input type="hidden" name="student_id" value="<%= student.student_id %>">
+                                            <button class="button button-danger" type="submit">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
 </body>
-
 </html>

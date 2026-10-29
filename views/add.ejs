@@ -1,41 +1,72 @@
-
 <!DOCTYPE html>
-<html>
-
-<head>
-<title>Add Student</title>
-</head>
-
-<body>
-
-<h1>Add Student</h1>
-
-<form action="/students/add" method="POST">
-
-<label>Student ID:</label><br>
-<input type="text" name="student_id" required><br><br>
-
-<label>First Name:</label><br>
-<input type="text" name="first_name" required><br><br>
-
-<label>Last Name:</label><br>
-<input type="text" name="last_name" required><br><br>
-
-<label>Course:</label><br>
-<input type="text" name="course" required><br><br>
-
-<label>Year Level:</label><br>
-<input type="number" name="year_level" min="1" max="5" required><br><br>
-
-<label>Email:</label><br>
-<input type="email" name="email" required><br><br>
-
-<button type="submit">Save Student</button>
-
-</form>
-
-<br>
-<a href="/">Back to Student List</a>
-
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student | StudentHub</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/">
+          <span class="brand-mark">S</span>
+          <span>Student<span class="brand-light">Hub</span></span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a class="nav-link" href="/"><span class="nav-icon" aria-hidden="true">▦</span><span>Students</span></a>
+          <a class="nav-link active" href="/students/add"><span class="nav-icon" aria-hidden="true">＋</span><span>Add student</span></a>
+        </nav>
+        <div class="sidebar-footer"><span class="status-dot"></span><span>Academic records</span></div>
+      </aside>
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Student Management System</p>
+            <h1>Add student</h1>
+          </div>
+        </header>
+        <section class="content-card form-card">
+          <div class="section-heading">
+            <div>
+              <h2>Student information</h2>
+              <p>Enter the details below to register a new student.</p>
+            </div>
+          </div>
+          <form class="student-form" action="/students/add" method="POST">
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="student_id">Student ID</label>
+                <input id="student_id" type="text" name="student_id" placeholder="e.g. 2024-0001" required>
+              </div>
+              <div class="form-field">
+                <label for="course">Course</label>
+                <input id="course" type="text" name="course" placeholder="e.g. BS Information Technology" required>
+              </div>
+              <div class="form-field">
+                <label for="first_name">First name</label>
+                <input id="first_name" type="text" name="first_name" required>
+              </div>
+              <div class="form-field">
+                <label for="last_name">Last name</label>
+                <input id="last_name" type="text" name="last_name" required>
+              </div>
+              <div class="form-field">
+                <label for="year_level">Year level</label>
+                <input id="year_level" type="number" name="year_level" min="1" max="5" placeholder="1 - 5" required>
+              </div>
+              <div class="form-field">
+                <label for="email">Email address</label>
+                <input id="email" type="email" name="email" placeholder="student@example.com" required>
+              </div>
+            </div>
+            <div class="form-actions">
+              <a class="button button-ghost" href="/">Cancel</a>
+              <button class="button button-primary" type="submit">Save student</button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>
